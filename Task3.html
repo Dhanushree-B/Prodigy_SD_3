@@ -1,104 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>About Myself</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right, #e0c3fc, #8ec5fc);
-            color: #333;
-            margin: 40px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Management System</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
 
-        h1 {
-            color: #6a0dad;
-            text-align: center;
-            font-size: 36px;
-        }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a1a40, #3a3a80);
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+    }
 
-        hr {
-            border: 0;
-            height: 3px;
-            background: #6a0dad;
-            margin-bottom: 30px;
-            width: 60%;
-        }
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #ffce00;
+    }
 
-        p {
-            font-size: 18px;
-            line-height: 1.6;
-            text-align: justify;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 15px;
-            border-radius: 10px;
-        }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #2b2b55;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
 
-        img {
-            display: block;
-            margin: 20px auto;
-            border-radius: 50%;
-            border: 4px solid #6a0dad;
-            width: 200px;
-        }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: 600;
+    }
 
-        h2 {
-            color: #4b0082;
-            margin-top: 40px;
-        }
+    input {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      margin-top: 5px;
+      border-radius: 5px;
+      font-family: 'Poppins', sans-serif;
+    }
 
-        ul, ol {
-            background: rgba(255, 255, 255, 0.6);
-            padding: 15px;
-            border-radius: 10px;
-            width: fit-content;
-        }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #ffce00;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-        li {
-            font-size: 17px;
-            margin-bottom: 8px;
-        }
+    button:hover {
+      background-color: #e0b000;
+    }
 
-        a {
-            color: #0000ee;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
 
-        a:hover {
-            color: #ff1493;
-        }
-    </style>
+    li {
+      margin-top: 15px;
+      background-color: #444476;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .actions button {
+      margin-left: 10px;
+      background-color: #ff4d4d;
+      color: #fff;
+    }
+
+    .actions button:hover {
+      background-color: #e60000;
+    }
+  </style>
 </head>
 <body>
+  <h1>📇 Contact Management</h1>
+  <div class="container">
+    <label>Name</label>
+    <input type="text" id="name" placeholder="Enter name"/>
+    <label>Phone</label>
+    <input type="text" id="phone" placeholder="Enter phone number"/>
+    <label>Email</label>
+    <input type="email" id="email" placeholder="Enter email"/>
+    <button onclick="addContact()">Add Contact</button>
+    <ul id="contactList"></ul>
+  </div>
 
-    <h1>About Myself</h1>
-    <hr>
+  <script>
+    let contacts = [];
 
-    <p>
-        Hi! My name is [Your Name]. I am a student who loves learning new things, especially in technology. 
-        I'm passionate about web development and enjoy building websites. In my free time, I like reading books and exploring creative hobbies. 
-        I also enjoy spending time with my friends and family. I always try to stay positive and help others when I can.
-    </p>
+    function renderContacts() {
+      const list = document.getElementById("contactList");
+      list.innerHTML = "";
 
-    <img src="your-photo.jpg" alt="My Photo">
+      contacts.forEach((contact, index) => {
+        list.innerHTML += `
+          <li>
+            <strong>${contact.name}</strong><br/>
+            📞 ${contact.phone} <br/>
+            📧 ${contact.email}
+            <div class="actions">
+              <button onclick="editContact(${index})">Edit</button>
+              <button onclick="deleteContact(${index})">Delete</button>
+            </div>
+          </li>
+        `;
+      });
+    }
 
-    <h2>My Hobbies</h2>
-    <ul>
-        <li>Reading</li>
-        <li>Drawing</li>
-        <li>Coding</li>
-        <li>Listening to music</li>
-    </ul>
+    function addContact() {
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
 
-    <h2>My Favorite Foods</h2>
-    <ol>
-        <li>Pizza</li>
-        <li>Ice Cream</li>
-        <li>Biryani</li>
-        <li>Pasta</li>
-    </ol>
+      if (name && phone && email) {
+        contacts.push({ name, phone, email });
+        clearForm();
+        renderContacts();
+      } else {
+        alert("Fill out all fields!");
+      }
+    }
 
-    <p>Visit my favorite website: <a href="https://www.example.com" target="_blank">Click here</a></p>
+    function clearForm() {
+      document.getElementById("name").value = "";
+      document.getElementById("phone").value = "";
+      document.getElementById("email").value = "";
+    }
 
+    function deleteContact(index) {
+      contacts.splice(index, 1);
+      renderContacts();
+    }
+
+    function editContact(index) {
+      const contact = contacts[index];
+      document.getElementById("name").value = contact.name;
+      document.getElementById("phone").value = contact.phone;
+      document.getElementById("email").value = contact.email;
+      deleteContact(index);
+    }
+  </script>
 </body>
 </html>
